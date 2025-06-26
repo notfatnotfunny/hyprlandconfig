@@ -1,0 +1,94 @@
+{
+	"layer": "top",
+	"height": 35,
+	"spacing": 10,
+	"modules-left": ["clock"],
+	"modules-center": ["custom/notification"],
+	"modules-right": ["custom/hotspot", "network", "custom/gsm", "pulseaudio", "custom/battery"],
+	"clock": {
+		"format": "{:%a %d. %b %H:%M}",
+		"on-click": "swaync-client -t -sw"
+	},
+	"custom/notification": {
+		"tooltip": false,
+		"format": "{} {icon}",
+		"format-icons": {
+			"notification": "",
+			"none": "",
+			"dnd-notification": "",
+			"dnd-none": "",
+			"inhibited-notification": "",
+			"inhibited-none": "",
+			"dnd-inhibited-notification": "",
+			"dnd-inhibited-none": ""
+		},
+		"return-type": "json",
+		"exec-if": "which swaync-client",
+		"exec": "swaync-client -swb",
+		"on-click": "swaync-client -t -sw",
+		"on-click-right": "swaync-client -d -sw",
+		"escape": true
+	},
+	"custom/battery": {
+		"format": "{percentage}% {icon}",
+		"format-icons": {"default": ["", "", "", "", ""], "charging": ""},
+		"return-type": "json",
+		"exec": "~/.config/waybar/scripts/battery.sh",
+		"interval": 2
+	},
+	"battery": {
+		"bat": "bq27411-0",
+		"interval": 60,
+		"states": {
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{capacity}% {icon}",
+		"format-icons": ["", "", "", "", ""],
+		"max-length": 25
+	},
+	"custom/hotspot": {
+		"format": {},
+		"return-type": "string",
+		"exec": "~/.config/waybar/scripts/hotspot.sh",
+		"interval": 10
+	},
+	"network": {
+		"interface": "wlan0",
+		"format": "{icon}",
+		"format-wifi": "",
+		"format-disconnected": "" 
+	},
+	"custom/gsm": {
+		"exec": "~/.config/waybar/scripts/gsm_status.sh",
+		"return-type": "json",
+		"format": {},
+		"interval": 2,
+		"on-click": "~/.config/waybar/scripts/gsm_toggle.sh"
+	},
+	"pulseaudio": {
+		"format": "{volume}% {icon}",
+		"format-bluetooth": "{volume}% {icon} {format_source}",
+		"format-bluetooth-muted": " {icon} {format_source}",
+		"format-muted": "0% {icon}",
+		"format-source": "{volume}% ",
+		"format-source-muted": "",
+		"format-icons": {
+			"headphone": "",
+			"hands-free": "",
+			"headset": "",
+			"phone": "",
+			"portable": "",
+			"car": "",
+			"default": ["", "", ""]
+		},
+		"on-click": "flatpak run org.pulseaudio.pavucontrol"
+	},
+
+
+	"reload_style_on_change": true
+}
+
+
+
+

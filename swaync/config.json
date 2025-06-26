@@ -1,0 +1,154 @@
+{
+  "$schema": "/etc/xdg/swaync/configSchema.json",
+  "positionX": "center",
+  "positionY": "top",
+  "layer": "overlay",
+  "control-center-layer": "top",
+  "layer-shell": true,
+  "layer-shell-cover-screen": true,
+  "cssPriority": "application",
+  "control-center-margin-top": 0,
+  "control-center-margin-bottom": 0,
+  "control-center-margin-right": 0,
+  "control-center-margin-left": 0,
+  "notification-2fa-action": true,
+  "notification-inline-replies": false,
+  "notification-icon-size": 64,
+  "notification-body-image-height": 100,
+  "notification-body-image-width": 200,
+  "timeout": 10,
+  "timeout-low": 5,
+  "timeout-critical": 0,
+  "fit-to-screen": true,
+  "relative-timestamps": true,
+  "control-center-width": 500,
+  "control-center-height": 600,
+  "notification-window-width": 500,
+  "keyboard-shortcuts": true,
+  "image-visibility": "when-available",
+  "transition-time": 200,
+  "hide-on-clear": false,
+  "hide-on-action": true,
+  "text-empty": "No Notifications",
+  "script-fail-notify": true,
+  "scripts": {
+    "example-script": {
+      "exec": "echo 'Do something...'",
+      "urgency": "Normal"
+    },
+    "example-action-script": {
+      "exec": "echo 'Do something actionable!'",
+      "urgency": "Normal",
+      "run-on": "action"
+    }
+  },
+  "notification-visibility": {
+    "example-name": {
+      "state": "muted",
+      "urgency": "Low",
+      "app-name": "Spotify"
+    }
+  },
+  "widgets": [
+    "inhibitors",
+    "title",
+    "dnd",
+    "menubar",
+    "notifications",
+    "buttons-grid"
+  ],
+  "widget-config": {
+    "inhibitors": {
+      "text": "Inhibitors",
+      "button-text": "Clear All",
+      "clear-all-button": true
+    },
+    "title": {
+      "text": "Notifications",
+      "clear-all-button": true,
+      "button-text": "Clear All"
+    },
+    "dnd": {
+      "text": "Do Not Disturb"
+    },
+    "menubar": {
+      "menu#brightness-buttons": {
+        "label": "", 
+        "position": "right",
+        "actions": [ 
+          {
+            "label": "-",
+            "command": "brightnessctl -e4 -n2 set 5%-"
+          },
+          {
+            "label": "+",
+            "command": "brightnessctl -e4 -n2 set 5%+"
+          }
+	]
+      },
+      "menu#volume-buttons": {
+        "label": "", 
+        "position": "right",
+        "actions": [ 
+          {
+            "label": "-",
+            "command": "amixer set Master 5%-"
+          },
+          {
+            "label": "+",
+            "command": "amixer set Master 5%+"
+          },
+	  {
+	    "label": "",
+	    "command": "pactl set-card-profile alsa_card.platform-sound 'Voice Call'"
+	  },
+	  {
+	    "label": "",
+	    "command": "pactl set-card-profile alsa_card.platform-sound 'HiFi' && pactl move-sink-input 3 alsa_output.platform-sound.HiFi__Speaker__sink"
+	  }
+	]
+      }
+    },
+    "label": {
+      "max-lines": 5,
+      "text": "Label Text"
+    },
+    "mpris": {
+      "image-size": 96,
+      "image-radius": 12,
+      "blacklist": []
+    },
+    "buttons-grid": {
+      "actions": [
+        {
+          "label": "",
+          "type": "toggle",
+          "active": true,
+          "command": "sh -c '[[ $SWAYNC_TOGGLE_STATE == true ]] && nmcli radio wifi on || nmcli radio wifi off'",
+          "update-command": "sh -c '[[ $(nmcli radio wifi) == \"enabled\" ]] && echo true || echo false'"
+        },
+	{
+	  "label": "",
+	  "type": "toggle",
+	  "active": true,
+	  "command": "sh -c '[[ $SWAYNC_TOGGLE_STATE == true ]] && nmcli radio wwan on || nmcli radio wwan off'",
+	  "update-command": "sh -c '[[ $(nmcli radio wwan) == \"enabled\" ]] && echo true || echo false'"
+	},
+	{
+	  "label": "",
+	  "type": "toggle",
+	  "active": true,
+	  "command": "sh -c '[[ $SWAYNC_TOGGLE_STATE == true ]] && (nmcli radio wifi on && nmcli dev wifi hotspot) || nmcli connection down Hotspot'",
+	  "update-command": "sh -c '[[ $(nmcli d | grep Hotspot | awk '{print $3}') == \"connected\" ]] && echo true || echo false'"
+	},
+	{
+	  "label": "",
+	  "type": "toggle",
+	  "active": true,
+	  "command": "sh -c '[[ $SWAYNC_TOGGLE_STATE == true ]] && bluetoothctl power on || bluetoothctl power off'",
+	  "update-command": "sh -c '[[ $(bluetoothctl show | grep Powered | awk '{print $2}') == \"no\" ]] && echo false || echo true'"
+	}
+      ]
+    }
+  }
+}
